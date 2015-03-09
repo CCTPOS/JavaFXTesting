@@ -1,0 +1,16 @@
+.Button{
+	 -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , -1 );
+	 -fx-background-color: orange;
+}
+
+#dbSubmit{
+	
+	-fx-background-image: url("../images/ok.png");
+	-fx-background-size: contain;
+	-fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , -1 );
+}
+
+#btnRetrieve{
+	
+	-fx-background-color: pink;
+}
