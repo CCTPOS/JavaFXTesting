@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-
+//comment
 public class GUIdbController implements Initializable{
 	
 	@FXML private Pane pane;
