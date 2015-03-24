@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import database.DB_Tables;
 
 public class POS_Control implements Initializable {
-
+	//tina changed this at 17.05
 	@FXML
 	private FlowPane p4;
 	@FXML
