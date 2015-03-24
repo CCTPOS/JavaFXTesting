@@ -24,7 +24,7 @@ public class DatabaseConnection {
   	
   public ArrayList<String> retrieveDatabase1() {
       
-      ArrayList<String> al = new ArrayList<String>();
+      ArrayList<String> al = new ArrayList<>();
  
       
 	try {
@@ -32,15 +32,25 @@ public class DatabaseConnection {
           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/database1","root","");
           Statement stmt = (Statement) con.createStatement();
           String sql;
-          sql = "select name from customerinfo;";
+          sql = "select name, address from customerinfo;";
           ResultSet rs = stmt.executeQuery(sql);
           
           while (rs.next()){
-              
-              al.add(rs.getString("name"));
+        	  String name = rs.getString("name");
+        	  String address = rs.getString("address");
+        	  
+        	  StringBuilder na = new StringBuilder();
+        	  na.append(name);
+        	  na.append(" "+address);
+        	  
+              al.add(na.toString());
           }                
 	}catch (Exception e) {    
       }
+	for(int i = 0; i < al.size(); i++){
+		System.out.println(al.get(i));
+	}
+	
  return al;
    }
   

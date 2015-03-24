@@ -18,7 +18,7 @@ public class MainAPP extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/view/Main.fxml"));
 			
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 1200,1080);
             scene.getStylesheets().add("/StyleSheets/TestDB.css");
             //scene.getStylesheets().add(getClass().getResource("/YouTubeFX/src/StyleSheets/TestDB.css").toExternalForm());
             primaryStage.setScene(scene);

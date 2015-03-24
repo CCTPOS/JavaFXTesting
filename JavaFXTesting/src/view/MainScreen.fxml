@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poscontrol.POS_Control">
    <children>
       <SplitPane dividerPositions="0.2781954887218045" layoutX="172.0" layoutY="14.0" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
@@ -35,7 +34,7 @@
                                             <items>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="417.0" prefWidth="213.0">
                                                    <children>
-                                                      <TextArea layoutX="7.0" prefHeight="398.0" prefWidth="213.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                      <TextArea fx:id="orderPane" layoutX="7.0" prefHeight="398.0" prefWidth="213.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                    </children>
                                                 </AnchorPane>
                                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -101,18 +100,22 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <HBox id="navigationButtons" layoutX="14.0" layoutY="9.0" prefHeight="117.0" prefWidth="516.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox fx:id="p2_1" prefHeight="100.0" prefWidth="200.0" />
+                              <HBox id="navigationButtons" fx:id="p2" layoutX="14.0" layoutY="9.0" prefHeight="117.0" prefWidth="516.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <Button fx:id="tablesDisplayButton" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" text="TABLE" />
+                                    <Button fx:id="tablesDisplayButton" mnemonicParsing="false" onAction="#retrieveTables" prefHeight="120.0" prefWidth="120.0" text="TABLE" />
                                     <Button fx:id="userButton" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" text="USER" />
                                     <Button fx:id="reportButton" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" text="REPORT" />
                                     <Button fx:id="stockButton" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" text="STOCK" />
-                                    <Button fx:id="LogoutButton" mnemonicParsing="false" prefHeight="120.0" prefWidth="120.0" text="LOGOUT" />
+                                    <Button fx:id="LogoutButton" mnemonicParsing="false" onAction="#logout" prefHeight="120.0" prefWidth="120.0" text="LOGOUT" />
                                  </children>
                               </HBox>
                            </children>
                         </AnchorPane>
-                      <AnchorPane id="tableNumDisplay" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="516.0" />
+                      <AnchorPane id="tableNumDisplay" minHeight="0.0" minWidth="0.0" prefHeight="500.0" prefWidth="516.0">
+                           <children>
+                              <FlowPane fx:id="p4" prefHeight="352.0" prefWidth="498.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children></AnchorPane>
                     </items>
                   </SplitPane>
                </children>
