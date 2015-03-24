@@ -16,6 +16,7 @@ import database.DB_Tables;
 
 public class POS_Control implements Initializable {
 	//tina changed this at 17.05
+	//tina changed 17.17
 	@FXML
 	private FlowPane p4;
 	@FXML
