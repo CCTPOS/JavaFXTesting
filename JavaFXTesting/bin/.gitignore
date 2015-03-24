@@ -1,6 +1,4 @@
-/view/
-/images/
-/testdb/
 /database/
-/controller/
 /poscontrol/
+/restautanttestdb/
+/testdb/
