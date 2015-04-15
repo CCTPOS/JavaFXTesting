@@ -15,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 public class ScreenPane extends AnchorPane {
+
+	// MultipleScreenFramework msf = new MultipleScreenFramework();
 	// Holds the screens to be displayed
 	private HashMap<String, Node> screens = new HashMap<>();
 

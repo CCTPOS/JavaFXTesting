@@ -1,6 +1,7 @@
 package poscontrol;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -11,16 +12,27 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import testdb.DataBetweenGUIs;
+import testdb.OrderEntry;
 import testdb.ScreenController;
 import testdb.ScreenPane;
+import database.DatabaseLogin;
 
 public class LoginScreenController implements Initializable, ScreenController {
-
+	OrderEntry oe;
+	// private POS_Control posC;
 	private ScreenPane myScreenPane;
+
+	DataBetweenGUIs dataTransfer = new DataBetweenGUIs();
 
 	// Label and buttons for the login screen
 	@FXML
 	PasswordField password;
+
+	public String getPassword() {
+		return password.getText();
+	}
+
 	@FXML
 	private Button one, two, three, four, five, six, seven, eight, nine, zero,
 			clear, enter;
@@ -29,10 +41,9 @@ public class LoginScreenController implements Initializable, ScreenController {
 	@FXML
 	private Label incorrectPassword;
 
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		// TODO
-	}
+	static ArrayList<String> al = new ArrayList<String>();
+
+	DatabaseLogin dbl = new DatabaseLogin();
 
 	@Override
 	public void setScreenPane(ScreenPane screenPage) {
@@ -40,10 +51,17 @@ public class LoginScreenController implements Initializable, ScreenController {
 	}
 
 	// checking login details
-	String input = "";
+	static String input = "";
+
+	static public String getInput() {
+		return input;
+	}
+
+	String user;
 
 	@FXML
 	private void enterNumber(ActionEvent event) {
+
 		incorrectPassword.setText("");
 		String clickedButton = event.getSource().toString();
 		// divides the source text into what we want and what we dont
@@ -56,11 +74,12 @@ public class LoginScreenController implements Initializable, ScreenController {
 
 	@FXML
 	private void enterLoginCode(ActionEvent event) {
-		if (password.getText().equals("5290")
-				|| password.getText().equals("2275")
-				|| password.getText().equals("8462")) {
+		al = DatabaseLogin.retrieveUserDetails();
+		// sets the username into String name in DataBetweenGUIs
+		dataTransfer.setUserName(al.get(1));
+		// user = al.get(0);
+		if (al.get(1) != null) {
 			password.clear();
-			input = "";
 			myScreenPane.setScreen("main");
 
 		} else {
@@ -76,6 +95,11 @@ public class LoginScreenController implements Initializable, ScreenController {
 	private void clearInput(ActionEvent event) {
 		password.clear();
 		input = "";
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		// Singleton.getInstance().setTxtField1(al.get(1));
 	}
 
 }

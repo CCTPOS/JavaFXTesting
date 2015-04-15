@@ -10,6 +10,17 @@ public class OrderEntry {
 	public SimpleIntegerProperty itemQty = new SimpleIntegerProperty();
 	public SimpleDoubleProperty itemPrice = new SimpleDoubleProperty();
 	public SimpleDoubleProperty itemSubTotal = new SimpleDoubleProperty();
+	public SimpleStringProperty itemID = new SimpleStringProperty();
+
+	public static String userTextfield = new String();
+
+	public static String getUserTextfield() {
+		return userTextfield;
+	}
+
+	public void setUserTextfield(String userTextfield) {
+		OrderEntry.userTextfield = userTextfield;
+	}
 
 	public String getItemDescription() {
 		return itemDescription.get();
@@ -25,6 +36,10 @@ public class OrderEntry {
 
 	public double getItemSubTotal() {
 		return itemSubTotal.get();
+	}
+
+	public String getItemID() {
+		return itemID.get();
 	}
 
 }

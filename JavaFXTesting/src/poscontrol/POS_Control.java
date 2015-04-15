@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -20,26 +21,32 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import testdb.DataBetweenGUIs;
 import testdb.OrderEntry;
 import testdb.ScreenController;
 import testdb.ScreenPane;
+import testdb.Singleton;
 import database.DB_Tables;
 
 public class POS_Control implements Initializable, ScreenController {
 
 	private ScreenPane myScreenPane;
-
+	DataBetweenGUIs dbg;
+	Singleton single;
+	OrderEntry oe;
 	@FXML
 	private FlowPane p4;
 	@FXML
 	private HBox hboxMenuSelectionButtons;
 	@FXML
 	private Button tablesDisplayButton, reportButton, stockButton,
-			LogoutButton, userButton;
+			LogoutButton, userButton, order, back;
+	@FXML
+	private Label incorrectPasswordController;
 	@FXML
 	private TextArea orderPane;
 	@FXML
-	private TextField userDetails, billTableNo, billTotal;
+	private TextField Username, billTableNo, billTotal, userDetails;
 
 	@FXML
 	private TableView<OrderEntry> orderView;
@@ -56,14 +63,23 @@ public class POS_Control implements Initializable, ScreenController {
 	@FXML
 	private TableColumn<OrderEntry, Double> itemSubTotal;
 
+	@FXML
+	private TableColumn<OrderEntry, String> itemID;
+
 	Button b, hboxMenuButtons;
 
 	ArrayList<String> al = new ArrayList<String>();
 	ArrayList<String> menuButtonNames = new ArrayList<String>();
+	String[] nickname;
+	String[] bContent;
+	// back button counter and array for storage
+	int backCounter = 1;
+	ArrayList<Integer> backHistory = new ArrayList<Integer>();
 
 	DB_Tables dbc = new DB_Tables();
 
 	ObservableList<OrderEntry> data;
+	boolean bool = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -80,6 +96,8 @@ public class POS_Control implements Initializable, ScreenController {
 		itemSubTotal
 				.setCellValueFactory(new PropertyValueFactory<OrderEntry, Double>(
 						"itemSubTotal"));
+		itemID.setCellValueFactory(new PropertyValueFactory<OrderEntry, String>(
+				"itemID"));
 
 		data = FXCollections.observableArrayList();
 		orderView.setItems(data);
@@ -93,7 +111,9 @@ public class POS_Control implements Initializable, ScreenController {
 
 	@FXML
 	private void retrieveTables() {
-
+		backHistory.add(backCounter);// gives us the 1 screen
+		dbg = new DataBetweenGUIs();
+		userDetails.setText(dbg.getUserName());
 		al = dbc.retrieveTableDetails();
 		p4.getChildren().clear();
 
@@ -106,6 +126,11 @@ public class POS_Control implements Initializable, ScreenController {
 			p4.getChildren().addAll(b);
 			p4.setVgap(10);
 			p4.setHgap(10);
+		}
+		backCounter = 2;
+		backHistory.add(backCounter);// gives us the second screen
+		for (Integer a : backHistory) {
+			System.out.println("Retrieve Tables: " + a);
 		}
 	}
 
@@ -140,6 +165,11 @@ public class POS_Control implements Initializable, ScreenController {
 				hboxMenuSelectionButtons.getChildren().addAll(hboxMenuButtons);
 			}
 			p4.getChildren().clear();
+			backCounter = 3;
+			backHistory.add(backCounter);
+			for (Integer a : backHistory) {
+				System.out.println("Retrieve Menu Selection: " + a);
+			}
 		}
 	};
 
@@ -152,10 +182,19 @@ public class POS_Control implements Initializable, ScreenController {
 
 			if (b.getId() == "Drinks") {
 
+				backCounter = 4;
+				backHistory.add(backCounter);
+				for (Integer a : backHistory) {
+					System.out.println("Retrieve Drinks: " + a);
+				}
+
 				al = dbc.retrieveDrinksSelection();
 
 				for (int i = 0; i < al.size(); i++) {
-					b = new Button(al.get(i));
+					b = new Button();
+					b.setId(al.get(i));
+					nickname = ((String) al.get(i)).split(",");
+					b.setText(nickname[1]);
 					b.setMinSize(170, 100);
 					b.setOnAction(addSelectionOrderPane);
 					p4.setVisible(true);
@@ -163,11 +202,19 @@ public class POS_Control implements Initializable, ScreenController {
 				}
 			} else if (b.getId() == "Starter") {
 
+				backCounter = 5;
+				backHistory.add(backCounter);
+				for (Integer a : backHistory) {
+					System.out.println("Retrieve Starters: " + a);
+				}
+
 				al = dbc.retrieveStarterSelection();
 
 				for (int i = 0; i < al.size(); i++) {
-					b = new Button(al.get(i));
-					// System.out.println(al.get(i));
+					b = new Button();
+					b.setId(al.get(i));
+					nickname = ((String) al.get(i)).split(",");
+					b.setText(nickname[1]);
 					b.setMinSize(170, 100);
 					b.setOnAction(addSelectionOrderPane);
 					p4.setVisible(true);
@@ -176,10 +223,19 @@ public class POS_Control implements Initializable, ScreenController {
 
 			} else if (b.getId() == "Main") {
 
+				backCounter = 6;
+				backHistory.add(backCounter);
+				for (Integer a : backHistory) {
+					System.out.println("Retrieve Main: " + a);
+				}
+
 				al = dbc.retrieveMainSelection();
 
 				for (int i = 0; i < al.size(); i++) {
-					b = new Button(al.get(i));
+					b = new Button();
+					b.setId(al.get(i));
+					nickname = ((String) al.get(i)).split(",");
+					b.setText(nickname[1]);
 					b.setMinSize(170, 100);
 					b.setOnAction(addSelectionOrderPane);
 					p4.setVisible(true);
@@ -188,11 +244,19 @@ public class POS_Control implements Initializable, ScreenController {
 
 			} else if (b.getId() == "Desserts") {
 
+				backCounter = 7;
+				backHistory.add(backCounter);
+				for (Integer a : backHistory) {
+					System.out.println("Retrieve Desserts: " + a);
+				}
+
 				al = dbc.retrieveDessertsSelection();
 
 				for (int i = 0; i < al.size(); i++) {
-					b = new Button(al.get(i));
-					b.setText(al.get(1));
+					b = new Button();
+					b.setId(al.get(i));
+					nickname = ((String) al.get(i)).split(",");
+					b.setText(nickname[1]);
 					b.setMinSize(170, 100);
 					b.setOnAction(addSelectionOrderPane);
 					p4.setVisible(true);
@@ -201,15 +265,20 @@ public class POS_Control implements Initializable, ScreenController {
 
 			} else if (b.getId() == "Sides") {
 
+				backCounter = 8;
+				backHistory.add(backCounter);
+
+				for (Integer a : backHistory) {
+					System.out.println("Retrieve Sides: " + a);
+				}
+
 				al = dbc.retrieveSidesSelection();
 
 				for (int i = 0; i < al.size(); i++) {
 					b = new Button();
 					b.setId(al.get(i));
-					System.out.println("Button id = " + al.get(i));
-					String[] nickname = ((String) al.get(i)).split(",");
+					nickname = ((String) al.get(i)).split(",");
 					b.setText(nickname[1]);
-					System.out.println(al.get(i));
 					b.setMinSize(170, 100);
 					b.setOnAction(addSelectionOrderPane);
 					p4.setVisible(true);
@@ -221,40 +290,23 @@ public class POS_Control implements Initializable, ScreenController {
 			}
 		}
 	};
-
+	OrderEntry entry;
+	int counter = 0;
+	double price = 0.00;
 	EventHandler<ActionEvent> addSelectionOrderPane = new EventHandler<ActionEvent>() {
 		@Override
 		public void handle(ActionEvent event) {
-			OrderEntry entry = new OrderEntry();
+			String[] splitSingleQuotes;
+
+			entry = new OrderEntry();
 
 			// gets the source text of clicked button
-			System.out.println("Source = " + event.getSource());
 			String clickedButton = event.getSource().toString();
+			System.out.println("Clicked button = " + clickedButton);
 			// divides the source text into what we want and what we dont
-			String[] splitSingleQuotes = clickedButton.split("'");
+			splitSingleQuotes = clickedButton.split("=");
 			// takes the part we want and splits it for orderPane manipulation
-			String[] bContent = splitSingleQuotes[1].split(",");
-			System.out.println(event.getSource());
-			double price = Double.parseDouble(bContent[2]);
-
-			int qtyCount = 1;
-			entry.itemDescription.setValue(bContent[1]);
-			entry.itemQty.setValue(qtyCount);
-			entry.itemPrice.set(price);
-			entry.itemSubTotal.set(price);
-
-			data.add(entry);
-
-			for (int i = 0; i < data.size() - 1; i++) {
-
-				if (data.get(i).getItemDescription().equals(bContent[1])) {
-					int xQty = data.get(i).getItemQty();
-					data.get(i).itemQty.setValue(xQty + 1);
-					double xPrice = data.get(i).getItemPrice();
-					data.get(i).itemSubTotal.set(xPrice * xQty);
-					data.remove(data.size() - 1);
-				}
-			}
+			bContent = splitSingleQuotes[1].split(",");
 
 			// looks after the sum of the subTotal fields
 			double billTotalAllRows = 0.00;
@@ -266,7 +318,74 @@ public class POS_Control implements Initializable, ScreenController {
 			billTotalAllRows = Double.valueOf(df.format(billTotalAllRows));
 			String parseBillTotalAllRows = String.valueOf(billTotalAllRows);
 			billTotal.setText("€" + parseBillTotalAllRows);
+
+			price = Double.valueOf(df.format(price));
+			price = Double.parseDouble(bContent[2]);
+
+			checkDuplicates();
+
+			if (bool == true) {
+
+				int qtyCount = 1;
+				entry.itemDescription.setValue(bContent[1]);
+				entry.itemQty.setValue(qtyCount);
+				entry.itemPrice.set(price);
+				entry.itemSubTotal.set(price);
+				entry.itemID.setValue(bContent[3]);
+				data.add(entry);
+			}
+
+			bool = true;
 		}
 
 	};
+
+	private void checkDuplicates() {
+		int j = 0;
+		for (int i = 0; i < data.size(); i++) {
+
+			if (data.get(i).getItemDescription().equals(bContent[1])) {
+				do {
+					entry.itemDescription.setValue(bContent[1]);
+
+					int xQty = data.get(i).getItemQty();
+					xQty++;
+					entry.itemQty.setValue(xQty);
+
+					// data.get(i).itemQty.setValue(xQty);
+					price = data.get(i).getItemPrice();
+					entry.itemPrice.set(price);
+					entry.itemSubTotal.set(price * xQty);
+					entry.itemID.setValue(bContent[3]);
+					data.set(i, entry);
+					bool = false;
+					System.out.println("duplicate "
+							+ data.get(i).itemDescription.toString());
+					j++;
+				} while (j < 1);
+			}
+		}
+	}
+
+	@FXML
+	public void createOrder() {
+		String orderString = "";
+
+		for (int i = 0; i < data.size(); i++) {
+
+			orderString = orderString + data.get(i).getItemDescription() + ","
+					+ data.get(i).getItemQty() + ","
+					+ data.get(i).getItemPrice() + ","
+					+ data.get(i).getItemSubTotal() + ","
+					+ data.get(i).getItemID();
+		}
+		System.out.println(orderString);
+	}
+
+	@FXML
+	public void back() {
+		int head = backHistory.size() - 2;
+
+		System.out.println(head);
+	}
 }
