@@ -30,6 +30,7 @@ public class MultipleScreenFramework extends Application {
 		stage.setHeight(primaryScreenBounds.getHeight());
 		stage.setScene(scene);
 		stage.show();
+
 	}
 
 	public static void main(String[] args) {

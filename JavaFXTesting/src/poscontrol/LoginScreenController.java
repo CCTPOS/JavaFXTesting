@@ -20,7 +20,7 @@ import database.DatabaseLogin;
 
 public class LoginScreenController implements Initializable, ScreenController {
 	OrderEntry oe;
-	// private POS_Control posC;
+
 	private ScreenPane myScreenPane;
 
 	DataBetweenGUIs dataTransfer = new DataBetweenGUIs();
@@ -61,7 +61,6 @@ public class LoginScreenController implements Initializable, ScreenController {
 
 	@FXML
 	private void enterNumber(ActionEvent event) {
-
 		incorrectPassword.setText("");
 		String clickedButton = event.getSource().toString();
 		// divides the source text into what we want and what we dont
@@ -74,20 +73,22 @@ public class LoginScreenController implements Initializable, ScreenController {
 
 	@FXML
 	private void enterLoginCode(ActionEvent event) {
+		int x = 0;
 		al = DatabaseLogin.retrieveUserDetails();
-		// sets the username into String name in DataBetweenGUIs
-		dataTransfer.setUserName(al.get(1));
-		// user = al.get(0);
-		if (al.get(1) != null) {
-			password.clear();
-			myScreenPane.setScreen("main");
 
-		} else {
+		if (al.isEmpty()) {
 			password.clear();
 			incorrectPassword.setText("Incorrect Password!!");
 			incorrectPassword.setTextFill(Color.RED);
 			password.setStyle("-fx-border-color:red;");
+			password.clear();
 			input = "";
+		} else {
+			dataTransfer.setUserName(al.get(1));
+			dataTransfer.setStaffId(x = Integer.parseInt(al.get(0)));
+			password.clear();
+			input = "";
+			myScreenPane.setScreen("main");
 		}
 	}
 
@@ -99,7 +100,6 @@ public class LoginScreenController implements Initializable, ScreenController {
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		// Singleton.getInstance().setTxtField1(al.get(1));
 	}
 
 }

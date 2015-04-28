@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -76,6 +77,9 @@
             <Insets />
          </opaqueInsets>
       </PasswordField>
-      <Label fx:id="incorrectPassword" layoutX="530.0" layoutY="26.0" prefHeight="48.0" prefWidth="300.0" />
+      <Label fx:id="incorrectPassword" layoutX="792.0" layoutY="75.0" prefHeight="48.0" prefWidth="300.0" textAlignment="CENTER" AnchorPane.leftAnchor="792.0" AnchorPane.rightAnchor="808.0" AnchorPane.topAnchor="75.0">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Label>
    </children>
 </AnchorPane>

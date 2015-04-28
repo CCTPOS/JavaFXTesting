@@ -21,7 +21,7 @@ public class DatabaseLogin {
 			String sql = "select Staff_Id, FName from staff where Password = ?;";
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/Restaurant", "root", "");
+					"jdbc:mysql://localhost:3306/restaurant", "root", "");
 			pstmt = con.prepareStatement(sql);
 
 			pstmt.setString(1, LoginScreenController.getInput());
@@ -31,9 +31,6 @@ public class DatabaseLogin {
 			while (rs.next()) {
 				String staffId = rs.getString(1);
 				String fName = rs.getString(2);
-				// StringBuilder staffDetails = new StringBuilder();
-				// staffDetails.append(staffId + " ");
-				// staffDetails.append(fName);
 
 				al.add(staffId);
 				al.add(fName);

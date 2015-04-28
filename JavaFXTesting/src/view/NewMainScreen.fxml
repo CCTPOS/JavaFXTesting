@@ -81,12 +81,12 @@
                   <Insets left="5.0" right="5.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="note" layoutX="154.0" layoutY="581.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="139.0" text="Note" AnchorPane.leftAnchor="143.0">
+            <Button fx:id="note" layoutX="154.0" layoutY="581.0" mnemonicParsing="false" onAction="#paneChangingTest" prefHeight="75.0" prefWidth="139.0" text="Note" AnchorPane.leftAnchor="143.0">
                <HBox.margin>
                   <Insets right="5.0" top="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="clear" layoutX="294.0" layoutY="581.0" mnemonicParsing="false" prefHeight="75.0" prefWidth="130.0" text="Void" AnchorPane.leftAnchor="285.0">
+            <Button fx:id="clear" layoutX="294.0" layoutY="581.0" mnemonicParsing="false" onAction="#voidItem" prefHeight="75.0" prefWidth="130.0" text="Void" AnchorPane.leftAnchor="285.0">
                <HBox.margin>
                   <Insets top="10.0" />
                </HBox.margin>
@@ -95,14 +95,14 @@
       </HBox>
       <TableView id="orderView" fx:id="orderView" editable="true" layoutX="7.0" layoutY="65.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="419.0" AnchorPane.bottomAnchor="206.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="65.0">
         <columns>
-          <TableColumn fx:id="itemDescription" minWidth="-Infinity" prefWidth="112.0" text="Description" />
-          <TableColumn fx:id="itemQty" minWidth="-Infinity" prefWidth="55.0" text="Qty" />
-            <TableColumn fx:id="itemPrice" minWidth="-Infinity" prefWidth="75.0" text="Price" />
-            <TableColumn fx:id="itemSubTotal" minWidth="-Infinity" prefWidth="85.0" resizable="false" text="Subtotal" />
-            <TableColumn fx:id="itemID" prefWidth="91.0" text="itemid" />
+          <TableColumn fx:id="itemDescription" minWidth="-Infinity" onEditStart="#selectItemFromPane" prefWidth="112.0" text="Description" />
+          <TableColumn fx:id="itemQty" minWidth="-Infinity" onEditStart="#selectItemFromPane" prefWidth="55.0" text="Qty" />
+            <TableColumn fx:id="itemPrice" minWidth="-Infinity" onEditStart="#selectItemFromPane" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="itemSubTotal" minWidth="-Infinity" onEditStart="#selectItemFromPane" prefWidth="85.0" resizable="false" text="Subtotal" />
+            <TableColumn fx:id="itemId" onEditStart="#selectItemFromPane" prefWidth="91.0" text="itemid" />
         </columns>
       </TableView>
-      <TextField id="userDetails" fx:id="userDetails" alignment="CENTER" layoutX="5.0" layoutY="6.0" prefHeight="52.0" prefWidth="419.0" promptText="Username" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0">
+      <TextField id="userDetails" fx:id="userDetails" alignment="CENTER" layoutX="5.0" layoutY="6.0" onAction="#setUserDetails" prefHeight="52.0" prefWidth="207.0" promptText="Username" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="6.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -124,5 +124,46 @@
         </items>
       </SplitPane>
       <FlowPane fx:id="p4" layoutX="449.0" layoutY="200.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="754.0" prefWidth="1440.0" />
+      <TextField id="userDetails" fx:id="userId" alignment="CENTER" layoutX="214.0" layoutY="6.0" onAction="#setUserDetails" prefHeight="52.0" prefWidth="207.0" promptText="User Id" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="6.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="5.0" />
+         </padding>
+      </TextField>
+      <VBox fx:id="confirmRequestOD" layoutX="500.0" layoutY="350.0" prefHeight="269.0" prefWidth="579.0">
+         <children>
+            <HBox prefHeight="56.0" prefWidth="500.0" />
+            <HBox prefHeight="61.0" prefWidth="500.0">
+               <children>
+                  <Label prefHeight="81.0" prefWidth="533.0" text="            Order details will be lost, are you sure?">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="52.0" prefWidth="579.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="291.0" />
+                  <Button fx:id="yes" mnemonicParsing="false" onAction="#yesNoConfirmOD" prefHeight="87.0" prefWidth="133.0" text="YES">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="no" layoutX="301.0" layoutY="10.0" mnemonicParsing="false" onAction="#yesNoConfirmOD" prefHeight="87.0" prefWidth="133.0" text="NO">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>
