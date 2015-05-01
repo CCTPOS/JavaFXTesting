@@ -28,7 +28,8 @@ public class DB_Tables {
 			ResultSet rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
-				String tableNo = rs.getString("Table_No");
+				String tabNo = rs.getString("Table_No");
+				String tableNo = tabNo.toUpperCase();
 				al.add(tableNo);
 			}
 		} catch (Exception e) {
@@ -71,7 +72,8 @@ public class DB_Tables {
 
 			while (rs.next()) {
 				String price2 = rs.getString("Price");
-				String nickname = rs.getString("NickName");
+				String nickName = rs.getString("NickName");
+				String nickname = nickName.toUpperCase();
 				String price = rs.getString("Price");
 				String itemId = rs.getString("Item_Id");
 				StringBuilder itemDetails = new StringBuilder();
@@ -224,7 +226,7 @@ public class DB_Tables {
 	// Retrieving details from database using Table_No. Not sure yet how much to
 	// take on first select statement
 	public ArrayList<String> retrieveAllOrderDetails() {
-		tableNo = POS_Control.tableSource;
+		tableNo = posc.tableSource;
 		System.out.println(tableNo);
 
 		ArrayList<String> al = new ArrayList<String>();

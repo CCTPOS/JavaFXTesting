@@ -20,9 +20,11 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.Pane;
+import testdb.Buttons;
 import testdb.DataBetweenGUIs;
 import testdb.OrderEntry;
 import testdb.ScreenController;
@@ -35,18 +37,23 @@ public class POS_Control implements Initializable, ScreenController {
 
 	private ScreenPane myScreenPane;
 
+	Buttons buttons = new Buttons();
+
+	@FXML
+	AnchorPane anchorpane, transparentBackground, paymentButtonTypes;
+
 	@FXML
 	private FlowPane p4;
 
 	@FXML
-	private HBox hboxMenuSelectionButtons;
+	private Pane paymentConfirmationPane;
 
 	@FXML
-	private VBox confirmRequestOD;
+	private HBox hboxMenuSelectionButtons, paymentButtonPane;
 
 	@FXML
 	private Button tablesDisplayButton, reports, stock, LogoutButton, users,
-			order, Back, note, clear, no, yes;
+			order, Back, note, clear, payment, yes, no;
 
 	@FXML
 	private Label incorrectPasswordController;
@@ -75,7 +82,7 @@ public class POS_Control implements Initializable, ScreenController {
 	@FXML
 	private TableColumn<OrderEntry, String> itemId;
 
-	Button b, hboxMenuButtons;
+	Button b, b2, hboxMenuButtons, paymentButtons;
 
 	ArrayList<String> al = new ArrayList<String>();
 	ArrayList<String> menuButtonNames = new ArrayList<String>();
@@ -90,7 +97,10 @@ public class POS_Control implements Initializable, ScreenController {
 	String newItems;
 	String backFromOrderView;
 
+	String paymentType;
+
 	// back button counter and array for storage
+	int element;
 	int backCounter = 1;
 	ArrayList<Integer> backHistory = new ArrayList<Integer>();
 
@@ -130,8 +140,8 @@ public class POS_Control implements Initializable, ScreenController {
 		orderView.getColumns().setAll(
 				Arrays.asList(itemDescription, itemQty, itemPrice,
 						itemSubTotal, itemId));
-
-		confirmRequestOD.setVisible(false);
+		paymentButtonPane.setVisible(false);
+		paymentConfirmationPane.setVisible(false);
 	}
 
 	@Override
@@ -163,7 +173,6 @@ public class POS_Control implements Initializable, ScreenController {
 
 		if (backCounter == 1) {
 			backHistory.add(backCounter);// gives us the 1 screen
-			System.out.println("Back Counter should be 2 -> " + backCounter);
 		}
 
 		if (backCounter > 1 && backHistory.get(backHistory.size() - 1) == 2) {
@@ -172,11 +181,6 @@ public class POS_Control implements Initializable, ScreenController {
 			backCounter = 2;
 			backHistory.add(backCounter);// gives us the second screen
 		}
-
-		for (int i = 0; i < backHistory.size(); i++) {
-			System.out.println("Back History 2 : " + backHistory.get(i));
-		}
-		System.out.println("1212121212121***********************************");
 	}
 
 	@FXML
@@ -184,7 +188,7 @@ public class POS_Control implements Initializable, ScreenController {
 		backHistory.clear();
 		System.out.println("Clear");
 		backCounter = 2;
-		backHistory.add(backCounter);
+		backHistory.add(2, 2);
 		System.out.println("Logout Back History = " + backHistory.get(0));
 		back();
 		backHistory.clear();
@@ -199,8 +203,6 @@ public class POS_Control implements Initializable, ScreenController {
 
 			tableSource = event.getSource().toString().substring(10, 18);
 			tableSelectionPane(tableSource);
-			System.out
-					.println("3333333333333333***********************************");
 		}
 	};
 
@@ -210,7 +212,6 @@ public class POS_Control implements Initializable, ScreenController {
 		billTableNo.setText(tableSource);
 
 		String tableStatus = dbc.retrieveTableStatus();
-		System.out.println("Table Status: -> " + tableStatus);
 		if (!tableStatus.equals("Vacant")) { // If occupied retrieves the
 												// order
 			retrieveOrder();
@@ -218,14 +219,8 @@ public class POS_Control implements Initializable, ScreenController {
 		} else {
 			isOccupied = false;
 		}
-
-		menuButtonNames.add("Drinks");
-		menuButtonNames.add("Starter");
-		menuButtonNames.add("Main");
-		menuButtonNames.add("Dessert");
-		menuButtonNames.add("Sides");
-		menuButtonNames.add("Logout");
-
+		menuButtonNames.clear();
+		menuButtonNames = buttons.menuSelectionButtons();
 		hboxMenuSelectionButtons.getChildren().clear();
 
 		for (int i = 0; i < menuButtonNames.size(); i++) {
@@ -233,7 +228,7 @@ public class POS_Control implements Initializable, ScreenController {
 			hboxMenuButtons.setMinSize(233, 185);
 			hboxMenuButtons.setId(menuButtonNames.get(i));
 			hboxMenuSelectionButtons.setSpacing(10);
-			hboxMenuSelectionButtons.setPadding(new Insets(0, 10, 10, 0));
+			hboxMenuSelectionButtons.setPadding(new Insets(0, 5, 5, 0));
 			hboxMenuButtons.setOnAction(menuButtonHandler);
 			hboxMenuSelectionButtons.getChildren().addAll(hboxMenuButtons);
 		}
@@ -247,46 +242,45 @@ public class POS_Control implements Initializable, ScreenController {
 			b = (Button) event.getSource();
 			p4.getChildren().clear();
 
-			if (b.getId() == "Drinks") {
+			if (b.getId() == "DRINKS") {
 
 				backCounter = 4;
 				backHistory.add(backCounter);
-				System.out
-						.println("44444444444444444***********************************");
+
 				for (int i : backHistory) {
 					System.out.println(i);
 				}
 
 				retrieveDrinks();
 
-			} else if (b.getId() == "Starter") {
+			} else if (b.getId() == "STARTER") {
 
 				backCounter = 5;
 				backHistory.add(backCounter);
 
 				retrieveStarters();
 
-			} else if (b.getId() == "Main") {
+			} else if (b.getId() == "MAIN") {
 
 				backCounter = 6;
 				backHistory.add(backCounter);
 
 				retrieveMains();
 
-			} else if (b.getId() == "Dessert") {
+			} else if (b.getId() == "DESSERT") {
 				backCounter = 7;
 				backHistory.add(backCounter);
 
 				retrieveDesserts();
 
-			} else if (b.getId() == "Sides") {
+			} else if (b.getId() == "SIDES") {
 
 				backCounter = 8;
 				backHistory.add(backCounter);
 
 				retrieveSides();
 
-			} else if (b.getId() == "Logout") {
+			} else if (b.getId() == "LOGOUT") {
 				backHistory.clear();
 				backCounter = 1;
 				backHistory.add(backCounter);
@@ -313,8 +307,6 @@ public class POS_Control implements Initializable, ScreenController {
 			p4.setVisible(true);
 			p4.getChildren().addAll(b);
 		}
-		System.out.println("Size -1 = "
-				+ backHistory.get(backHistory.size() - 1));
 
 		if (backHistory.get(backHistory.size() - 1) == 4) {
 			return;
@@ -348,8 +340,6 @@ public class POS_Control implements Initializable, ScreenController {
 			backCounter = 5;
 			backHistory.add(backCounter);
 		}
-		System.out
-				.println("55555555555555555555555***********************************");
 	}
 
 	// retrieves mains when mains is clicked
@@ -510,19 +500,12 @@ public class POS_Control implements Initializable, ScreenController {
 			return;
 		} else {
 
-			int element = backHistory.get(backHistory.size() - 2);
+			element = backHistory.get(backHistory.size() - 2);
 
 			if (element == 0) {
 				System.out.println("No history!!!");
 			} else if (element == 1) {
 
-				System.out.println("Element should be 1, it is: " + element);
-				/*
-				 * ************************************************************
-				 * Clears the Top row and resets them to
-				 * Table/Stock/Reports/Users/Logout
-				 * ************************************************************
-				 */
 				hboxMenuSelectionButtons.getChildren().clear();
 				buttonArray.clear();
 				buttonArray.addAll(Arrays.asList(tablesDisplayButton, reports,
@@ -534,58 +517,28 @@ public class POS_Control implements Initializable, ScreenController {
 
 				p4.getChildren().clear();
 				backHistory.remove(element);
-
-				for (int i = 0; i < backHistory.size(); i++) {
-					System.out.println("Back History 1 :" + backHistory.get(i));
-				}
 
 			} else if (element == 2) {
 
-				try {
-					if (element + 1 == 3
-							&& data.get(0).getItemDescription() == null) {
-						confirmRequestOD.setVisible(true);
-
-					}
-				} catch (NullPointerException npe) {
-					System.out.println("Null pointer caught!!");
+				if (element + 1 == 3 && orderView.getItems().size() == 0) {
+					backFromOrderView = "YES";
+					pane3ToPane2();
+				} else {
+					pane3ToPane2();
 				}
-				// need to check out deleted element
-				hboxMenuSelectionButtons.getChildren().clear();
-				buttonArray.clear();
-				buttonArray.addAll(Arrays.asList(tablesDisplayButton, reports,
-						stock, users, LogoutButton));
 
-				for (Button bA : buttonArray) {
-					System.out.println("Tables/ Stock/Reports...."
-							+ bA.toString());
-					hboxMenuSelectionButtons.getChildren().addAll(bA);
-				}
-				// Clears Pane 4 and resets them to Table Selection
-				p4.getChildren().clear();
-				backHistory.remove(element);
-
-				retrieveTables();
 			} else if (element == 3) {
-				System.out.println("Element should be 3, it is: " + element);
+
 				String tabSource = billTableNo.getText();
 				tableSelectionPane(tabSource);
 
-				for (int i = 0; i < backHistory.size() - 1; i++) {
-					System.out.println("Array  index " + i + " is: "
-							+ backHistory.get(i));
-				}
 				backHistory.remove(element);
-				// backHistory.remove(element - 1);
 				p4.getChildren().clear();
 
 			} else if (element == 4) {
-				System.out.println("Element should be 4, it is: " + element);
-				for (int i = 0; i < backHistory.size() - 1; i++) {
-					System.out.println("Screen at index " + i + " is: "
-							+ backHistory.get(i));
-				}
+
 				backHistory.remove(element);
+				p4.getChildren().clear();
 				retrieveDrinks();
 
 			} else if (element == 5) {
@@ -612,17 +565,55 @@ public class POS_Control implements Initializable, ScreenController {
 				p4.getChildren().clear();
 				retrieveSides();
 
+			} else if (element == 9) {
+
+				backHistory.remove(element);
+				paymentConfirmationPane.setVisible(false);
+				paymentSelectionScreen();
+
 			}
 
 			System.out.println("The previous screen was :" + element);
 		}
 	}
 
-	@FXML
-	public String yesNoConfirmOD(ActionEvent e) {
-		System.out.println(e.getSource().toString());
-		backFromOrderView = e.getSource().toString();
-		return e.getSource().toString();
+	private void pane3ToPane2() {
+
+		String response = "";
+
+		if (backFromOrderView == "YES") {
+
+		} else {
+
+			/*
+			 * Optional<ButtonType> result = myHandler.showAndWait(); if
+			 * (result.get() == ButtonType.OK){ // ... user chose OK } else { //
+			 * ... user chose CANCEL or closed the dialog } }
+			 */}
+		if (response == "YES" || backFromOrderView == "YES") {
+			System.out.println("2 " + response);
+			// confirmRequestOD.setVisible(false);
+
+			// need to check out deleted element
+			hboxMenuSelectionButtons.getChildren().clear();
+			buttonArray.clear();
+			buttonArray.addAll(Arrays.asList(tablesDisplayButton, reports,
+					stock, users, LogoutButton));
+
+			for (Button bA : buttonArray) {
+				System.out.println("Tables/ Stock/Reports...." + bA.toString());
+				hboxMenuSelectionButtons.getChildren().addAll(bA);
+			}
+			// Clears Pane 4 and resets them to Table Selection
+			p4.getChildren().clear();
+			backHistory.remove(element);
+
+			retrieveTables();
+		} else if (backFromOrderView == "NO") {
+			System.out.println("2 " + backFromOrderView);
+			return;
+		}
+		backFromOrderView = "";
 	}
 
 	@FXML
@@ -759,6 +750,49 @@ public class POS_Control implements Initializable, ScreenController {
 		}
 	}
 
+	@FXML
+	public void paymentSelectionScreen() {
+		menuButtonNames.clear();
+		menuButtonNames = buttons.paySelectionButtons();
+
+		// paymentButtonPane.setStyle("-fx-background-color: #336699;");
+
+		for (int i = 0; i < menuButtonNames.size(); i++) {
+			paymentButtons = new Button(menuButtonNames.get(i));
+			paymentButtons.setMinSize(250, 380);
+			paymentButtons.setId(menuButtonNames.get(i));
+			paymentButtons.setOnAction(paymentButtonHandler);
+			paymentButtonPane.setSpacing(10);
+			paymentButtonPane.setPadding(new Insets(10, 10, 10, 10));
+			paymentButtonPane.getChildren().addAll(paymentButtons);
+			System.out.println("*************************************   "
+					+ paymentButtons.getId());
+		}
+		backCounter = 9;
+		backHistory.add(backCounter);
+		paymentButtonPane.setVisible(true);
+	}
+
+	EventHandler<ActionEvent> paymentButtonHandler = new EventHandler<ActionEvent>() {
+
+		@Override
+		public void handle(ActionEvent event) {
+			b = (Button) event.getSource();
+			paymentType = b.getText();
+			paymentButtonPane.setVisible(false);
+			paymentConfirmationPane.setVisible(true);
+		}
+	};
+
+	public void confirmedYesNo(ActionEvent e) {
+		b = (Button) e.getSource();
+		if (b.getText() == "YES") {
+			// do the database thing
+		} else {
+			// do the database thing tell staff order is saved as unpaid???
+		}
+
+	}
 }
 
 /*
@@ -777,12 +811,11 @@ public class POS_Control implements Initializable, ScreenController {
  * quantityOrdered); }
  * 
  * }
- */
-
-/*
- * private void retrieveOrder() { // Need to put in headings eg. mains etc. al =
- * dbc.retrieveAllOrderDetails(); String orderInfo = null; // String billInfo =
- * null; // entry = new OrderEntry();
+ * 
+ * 
+ * /* private void retrieveOrder() { // Need to put in headings eg. mains etc.
+ * al = dbc.retrieveAllOrderDetails(); String orderInfo = null; // String
+ * billInfo = null; // entry = new OrderEntry();
  * 
  * for (int i = 0; i < al.size(); i++) { orderInfo = al.get(0);
  * System.out.println(al.get(i)); }

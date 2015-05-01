@@ -13,13 +13,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import testdb.DataBetweenGUIs;
-import testdb.OrderEntry;
 import testdb.ScreenController;
 import testdb.ScreenPane;
 import database.DatabaseLogin;
 
 public class LoginScreenController implements Initializable, ScreenController {
-	OrderEntry oe;
 
 	private ScreenPane myScreenPane;
 
